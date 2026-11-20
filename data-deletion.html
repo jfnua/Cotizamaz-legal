@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eliminación de Datos — Cotiza+</title>
+  <style>
+    :root {
+      --bg-color: #F4F5F7;
+      --card-bg: #FFFFFF;
+      --text-main: #111827;
+      --text-muted: #4B5563;
+      --text-light: #6B7280;
+      --border-color: #E5E7EB;
+      --border-subtle: #F3F4F6;
+      --link-color: #1D4ED8;
+      --brand-navy: #042E3D;
+      --brand-yellow: #E48F02;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 32px 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      padding: 40px 36px;
+    }
+
+    /* Top navigation / breadcrumb */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+
+    .top-bar a {
+      color: var(--link-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .top-bar a:hover {
+      text-decoration: underline;
+    }
+
+    .top-bar .tag {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    .brand-cotiza {
+      color: var(--brand-navy);
+      font-weight: 800;
+    }
+
+    .brand-plus {
+      color: var(--brand-yellow);
+      font-weight: 800;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 32px;
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 12px;
+    }
+
+    .app-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border-color);
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .header-text h1 strong {
+      font-weight: 800;
+    }
+
+    .header-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .header-date {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 28px 0;
+    }
+
+    /* Section headline */
+    .section-headline {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 24px;
+      line-height: 1.4;
+    }
+
+    /* iubenda 2-column grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 28px 36px;
+      margin-bottom: 36px;
+    }
+
+    .service-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .service-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      color: #1F2937;
+      margin-top: 2px;
+    }
+
+    .service-body {
+      flex: 1;
+    }
+
+    .service-body h2 {
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+
+    .service-name {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    .service-detail {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 4px;
+    }
+
+    .service-detail span {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Detailed step section */
+    .detailed-section {
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .detailed-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .detailed-section p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .steps-card {
+      background-color: var(--border-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      margin: 16px 0 24px 0;
+    }
+
+    .steps-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .steps-card ol {
+      margin-left: 20px;
+      margin-bottom: 12px;
+      color: var(--text-muted);
+      font-size: 0.93rem;
+    }
+
+    .steps-card li {
+      margin-bottom: 6px;
+    }
+
+    .steps-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+
+    .info-box {
+      background-color: var(--border-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .info-box strong {
+      color: var(--text-main);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    footer a {
+      color: var(--link-color);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer-links {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+      .container {
+        padding: 24px 18px;
+      }
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <a href="index.html">← Volver al Portal Legal</a>
+      <span class="tag">Instrucciones de Eliminación</span>
+    </div>
+
+    <header>
+      <div class="header-content">
+        <img src="assets/logo.png" alt="Cotiza+ Logo" class="app-logo">
+        <div class="header-text">
+          <h1>Eliminación de Datos de <span class="brand-cotiza">Cotiza</span><span class="brand-plus">+</span></h1>
+          <p class="header-desc">Instrucciones oficiales para la eliminación total, inmediata e irreversible de tu información comercial y personal.</p>
+          <p class="header-date">Última actualización: 19 de noviembre de 2026</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="divider"></div>
+
+    <div class="section-headline">
+      Mecanismos de eliminación disponibles y características del almacenamiento:
+    </div>
+
+    <div class="services-grid">
+      <!-- 1. Borrado nativo desde la app -->
+      <div class="service-item">
+        <div class="service-icon">
+          <!-- Trash Can Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </div>
+        <div class="service-body">
+          <h2>Eliminación Nativa en la App</h2>
+          <div class="service-name">Función integrada en Cotiza+ (Recomendado)</div>
+          <p class="service-detail"><span>Acceso:</span> Pestaña «Más» > «Eliminación de datos» > «Eliminar todos mis datos».</p>
+          <p class="service-detail"><span>Efecto:</span> Purga de forma atómica e inmediata la base de datos local SQLite y todas las fotografías almacenadas en el dispositivo.</p>
+        </div>
+      </div>
+
+      <!-- 2. Ajustes del Sistema Operativo -->
+      <div class="service-item">
+        <div class="service-icon">
+          <!-- Gear / Settings Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+        </div>
+        <div class="service-body">
+          <h2>Ajustes del Dispositivo</h2>
+          <div class="service-name">Configuración del Sistema Operativo Android</div>
+          <p class="service-detail"><span>Acceso:</span> Ajustes > Aplicaciones > Cotiza+ > Almacenamiento > «Borrar almacenamiento».</p>
+          <p class="service-detail"><span>Efecto:</span> El sistema operativo vacía por completo el contenedor de datos privado sin necesidad de abrir la aplicación.</p>
+        </div>
+      </div>
+
+      <!-- 3. Desinstalación -->
+      <div class="service-item">
+        <div class="service-icon">
+          <!-- Smartphone / Uninstall Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14zm-1-6h-3.5V9.5h-1V13H8v1h3.5v3.5h1V14H16v-1z"/>
+          </svg>
+        </div>
+        <div class="service-body">
+          <h2>Desinstalación de la App</h2>
+          <div class="service-name">Desinstalación vía Launcher o Play Store</div>
+          <p class="service-detail"><span>Acceso:</span> Mantén presionado el icono de Cotiza+ y selecciona «Desinstalar».</p>
+          <p class="service-detail"><span>Efecto:</span> Android destruye de forma física el directorio local de la app y todos sus registros sin dejar rastros.</p>
+        </div>
+      </div>
+
+      <!-- 4. Política de Retención Cero -->
+      <div class="service-item">
+        <div class="service-icon">
+          <!-- Shield / Security Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+          </svg>
+        </div>
+        <div class="service-body">
+          <h2>Política de Retención</h2>
+          <div class="service-name">Período de retención en servidores: 0 días</div>
+          <p class="service-detail"><span>Garantía:</span> No operamos servidores centrales ni almacenamiento en la nube para cuentas de usuario.</p>
+          <p class="service-detail"><span>Efecto:</span> Al borrar los datos en tu teléfono no queda ninguna copia oculta ni período de espera en internet.</p>
+        </div>
+      </div>
+
+      <!-- 5. Copias de Respaldo Externas -->
+      <div class="service-item">
+        <div class="service-icon">
+          <!-- Backup Archive Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10zM8 13.5l1.41 1.41 2.59-2.59V17h2v-4.68l2.59 2.59L18 13.5l-5-5-5 5z"/>
+          </svg>
+        </div>
+        <div class="service-body">
+          <h2>Respaldos Personales (ZIP)</h2>
+          <div class="service-name">Archivos exportados por el usuario</div>
+          <p class="service-detail"><span>Control:</span> Si exportaste copias de seguridad en archivos ZIP a tu Google Drive, correo o almacenamiento externo, tú conservas el control exclusivo.</p>
+          <p class="service-detail"><span>Eliminación:</span> Puedes borrarlos directamente desde el explorador de archivos o tu proveedor de nube en cualquier momento.</p>
+        </div>
+      </div>
+
+      <!-- 6. Canal de Contacto -->
+      <div class="service-item">
+        <div class="service-icon">
+          <!-- Mail Icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+        </div>
+        <div class="service-body">
+          <h2>Asistencia y Soporte</h2>
+          <div class="service-name">soporte@nullbros.com</div>
+          <p class="service-detail"><span>Atención:</span> Canal directo para cualquier pregunta sobre la gestión y eliminación de tus datos.</p>
+          <p class="service-detail"><span>Respuesta:</span> Asistencia técnica directa por los desarrolladores de la aplicación.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guía paso a paso detallada -->
+    <div class="detailed-section">
+      <h2>Guía Paso a Paso para la Eliminación Definitiva</h2>
+      <p>Selecciona el método de tu preferencia según la situación:</p>
+
+      <div class="steps-card">
+        <h3>Método 1: Desde la propia aplicación Cotiza+ (Opción recomendada)</h3>
+        <ol>
+          <li>Abre la aplicación <strong>Cotiza+</strong> en tu teléfono.</li>
+          <li>En la barra de navegación inferior, dirígete a la pestaña <strong>Más</strong>.</li>
+          <li>Toca en la sección <strong>«Eliminación de datos»</strong>.</li>
+          <li>Pulsa el botón <strong>«Eliminar todos mis datos»</strong>.</li>
+          <li>Confirma la advertencia de seguridad pulsando <strong>«Sí, eliminar todo»</strong>.</li>
+        </ol>
+        <p><strong>Resultado inmediato:</strong> La app borra la base de datos completa (clientes, cotizaciones, partidas, cobros), elimina todas las fotos guardadas y restablece la app a su estado inicial.</p>
+      </div>
+
+      <div class="steps-card">
+        <h3>Método 2: Desde los Ajustes del Sistema Operativo Android</h3>
+        <ol>
+          <li>Abre la app de <strong>Ajustes</strong> o <strong>Configuración</strong> de tu dispositivo Android.</li>
+          <li>Entra a <strong>Aplicaciones</strong> (o «Administrador de aplicaciones»).</li>
+          <li>Busca y presiona sobre <strong>Cotiza+</strong>.</li>
+          <li>Entra en <strong>Almacenamiento y caché</strong>.</li>
+          <li>Toca en <strong>«Borrar almacenamiento»</strong> (o «Borrar datos») y confirma la operación.</li>
+        </ol>
+        <p><strong>Resultado inmediato:</strong> El sistema operativo destruye todo el almacenamiento local de la aplicación.</p>
+      </div>
+
+      <div class="steps-card">
+        <h3>Método 3: Desinstalación completa</h3>
+        <ol>
+          <li>Mantén presionado el icono de <strong>Cotiza+</strong> en tu pantalla de inicio o cajón de aplicaciones.</li>
+          <li>Selecciona la opción <strong>«Desinstalar»</strong> (o desinstálala desde Google Play Store).</li>
+        </ol>
+        <p><strong>Resultado inmediato:</strong> Android elimina de forma física el directorio privado de la app junto con todas sus bases de datos.</p>
+      </div>
+    </div>
+
+    <div class="detailed-section">
+      <h2>Compromiso de No Retención en la Nube</h2>
+      <p>
+        Al operar bajo una arquitectura estrictamente local («local-first»), <strong>Cotiza+ no almacena copias de tus datos en servidores remotos</strong>. Una vez que realizas el borrado mediante cualquiera de los métodos anteriores, la eliminación es inmediata, total e irreversible.
+      </p>
+      <div class="info-box">
+        <strong>¿Tienes dudas o necesitas ayuda?</strong> Escríbenos directamente a <a href="mailto:soporte@nullbros.com">soporte@nullbros.com</a> y te atenderemos con gusto.
+      </div>
+    </div>
+
+    <footer>
+      <p>© <span id="current-year"></span> Cotiza+ - Cotizaciones y PDF</p>
+      <div class="footer-links">
+        <a href="index.html">Portal Legal</a>
+        <span>•</span>
+        <a href="privacy-policy.html">Ver Política de Privacidad Completa</a>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
